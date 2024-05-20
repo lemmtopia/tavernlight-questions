@@ -2,57 +2,117 @@
 -- NOTE(Gabriel): https://github.com/otland/forgottenserver/wiki/Constants#MagicEffect
 local combat = {}
 
-local areas = {
-   {
-      {0, 0, 0, 0, 0},
-      {0, 1, 0, 0, 0},
-      {1, 0, 2, 0, 1},
-      {0, 1, 0, 0, 0},
-      {0, 0, 1, 0, 0},
-   },
-   {
-      {1, 0, 1},
-      {0, 2, 0},
-      {1, 0, 1},
-   },
-   {
-      {0, 0, 1},
-      {1, 2, 0},
-      {0, 0, 1},
-   },
-   {
-      {0, 0, 0, 0, 0},
-      {0, 1, 0, 1, 0},
-      {0, 0, 2, 0, 1},
-      {0, 0, 1, 1, 0},
-      {0, 0, 1, 0, 0},
-   },
-   {
-      {0, 0, 1},
-      {1, 2, 0},
-      {0, 0, 1},
-   },
-   {
-      {1, 1, 0},
-      {1, 2, 0},
-      {1, 0, 1},
-   },
+-- NOTE(Gabriel): I don't know how to explain this, but I guess I figured it out.
+-- NOTE(Gabriel): Each effect takes two or three cells.
+local area = {
+	{
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 1, 1, 0, 0, 0, 0},
+		{1, 1, 0, 2, 0, 1, 1},
+		{0, 1, 1, 0, 0, 0, 0},
+		{0, 0, 1, 1, 0, 0, 0},
+		{0, 0, 0, 1, 0, 0, 0}
+	},
+	{
+		{0, 0, 1, 0, 1, 0, 0},
+		{0, 0, 1, 0, 1, 0, 0},
+		{0, 0, 0, 1, 1, 1, 0},
+		{0, 0, 1, 2, 1, 0, 0},
+		{0, 1, 1, 1, 1, 1, 0},
+		{0, 0, 1, 0, 1, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0}
+	},
+	{
+		{0, 0, 0, 1, 1, 0, 0},
+		{0, 0, 0, 1, 1, 0, 0},
+		{0, 1, 1, 0, 0, 0, 1},
+		{1, 1, 0, 2, 1, 0, 1},
+		{0, 0, 0, 1, 1, 0, 1},
+		{0, 0, 0, 0, 1, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0}
+	},
+	{
+		{0, 0, 0, 1, 0, 0, 0},
+		{0, 0, 0, 1, 0, 0, 0},
+		{0, 0, 1, 1, 0, 0, 0},
+		{1, 1, 1, 2, 1, 0, 0},
+		{0, 1, 1, 1, 1, 0, 0},
+		{0, 0, 1, 1, 1, 0, 0},
+		{0, 0, 1, 1, 0, 0, 0}
+	},
+	{
+		{0, 0, 0, 1, 1, 0, 0},
+		{0, 0, 0, 1, 1, 0, 0},
+		{0, 1, 1, 0, 0, 0, 1},
+		{1, 1, 0, 2, 1, 0, 1},
+		{0, 0, 0, 1, 1, 0, 1},
+		{0, 0, 0, 0, 1, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0}
+	},
+	{
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 1, 1, 0, 0, 0, 0},
+		{1, 1, 0, 2, 0, 1, 1},
+		{0, 1, 1, 0, 1, 1, 0},
+		{0, 0, 1, 1, 0, 1, 0},
+		{0, 0, 0, 1, 0, 0, 0}
+	},
+	{
+		{0, 0, 1, 0, 1, 0, 0},
+		{0, 0, 1, 0, 1, 1, 0},
+		{0, 0, 0, 1, 1, 1, 1},
+		{0, 0, 1, 2, 1, 0, 0},
+		{0, 1, 1, 1, 1, 1, 0},
+		{0, 0, 1, 0, 1, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0}
+	},
+	{
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 1, 1, 0, 0, 0, 0},
+		{1, 1, 0, 2, 0, 1, 1},
+		{1, 1, 1, 0, 0, 0, 0},
+		{0, 1, 1, 1, 0, 0, 0},
+		{0, 0, 0, 1, 0, 0, 0}
+	},
+	{
+		{0, 1, 1, 0, 1, 0, 0},
+		{1, 1, 1, 0, 1, 0, 0},
+		{1, 1, 0, 1, 1, 1, 0},
+		{0, 0, 1, 2, 1, 1, 1},
+		{0, 1, 1, 1, 1, 1, 1},
+		{0, 0, 1, 0, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0}
+	}
 }
 
--- NOTE(Gabriel): We need to initialize a new combat for each pattern :/
-for i = 1, #areas do
-   combat[i] = Combat()
-   combat[i]:setParameter(COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
-   combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICETORNADO)
+--[[
+function onGetFormulaValues(creature, level, magicLevel)
+    local levelDiv, magicMult, bias = 5, 3.14, 10
+    local min = (level / levelDiv) + (magicLevel * magicMult) + bias
+    local max = (level / levelDiv) + (magicLevel * magicMult * 2) + bias * 2
+      
+    return -min, -max
+end
+]]--
 
-   combat[i]:setArea(createCombatArea(areas[i]))
+-- NOTE(Gabriel): We need to initialize a new combat for each pattern :/
+for i = 1, #area do
+	combat[i] = Combat()
+	combat[i]:setParameter(COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+	combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICETORNADO)
+
+	combat[i]:setArea(createCombatArea(area[i]))
+	--combat[i]:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
 end
 
 local iceStorm = Spell(SPELL_INSTANT)
 function iceStorm.onCastSpell(creature, variant)
-   local cooldown = 250
+   local cooldown = 200
    
-   for i = 1, #areas do
+   for i = 1, #area do
       addEvent(function()
 	    -- NOTE(Gabriel): Iterate over combats
 	    combat[i]:execute(creature, variant)
